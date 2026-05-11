@@ -1,7 +1,15 @@
+import type { Metadata } from "next";
 import { ArrowRight, CheckCircle2, Map, RadioTower, ShieldCheck, Sparkles } from "lucide-react";
 import { LocalizedLink } from "@/components/localized-link";
 import { SectionHeading } from "@/components/section";
-import { coreEngines, impactAreas, metrics, problemStats, products, values } from "@/lib/site";
+import { pageMetadata } from "@/lib/seo";
+import { coreEngines, impactAreas, metrics, partners, problemStats, products, validationEvidence, values } from "@/lib/site";
+
+export const metadata: Metadata = pageMetadata(
+  "Rural jobs, farm help, and contractor support",
+  "Shramic Networks helps workers, farmers, and contractors find rural work, book services, and coordinate jobs in local languages.",
+  "/"
+);
 
 export default function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   void params;
@@ -10,30 +18,24 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
       <section className="relative min-h-[calc(100vh-78px)] overflow-hidden bg-[#17201c] text-white">
         <div
           aria-hidden="true"
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(90deg, rgba(23,32,28,.96) 0%, rgba(23,32,28,.84) 42%, rgba(23,32,28,.35) 100%), url('https://images.unsplash.com/photo-1605000797499-95a51c5269ae?auto=format&fit=crop&w=2200&q=82')",
-            backgroundPosition: "center",
-            backgroundSize: "cover"
-          }}
+          className="absolute inset-0 home-hero-image"
         />
-        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#f7f3ea] to-transparent" />
+        <div aria-hidden="true" className="home-hero-fade absolute inset-x-0 bottom-0 h-28" />
         <div className="container relative grid min-h-[calc(100vh-78px)] gap-10 py-16 lg:grid-cols-[1.03fr_.8fr] lg:items-center">
           <div>
             <div className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-sm font-black text-[#f2dfbf] backdrop-blur">
-              <Sparkles size={16} /> Investor-grade rural intelligence platform
+              <Sparkles size={16} /> For workers, farmers, and contractors
             </div>
-            <h1 className="display mt-7 max-w-5xl">India&apos;s rural work graph, built as infrastructure.</h1>
+            <h1 className="display mt-7 max-w-5xl">Find rural work, book help, and manage jobs in one place.</h1>
             <p className="mt-7 max-w-2xl text-xl leading-8 text-[#eadfce]">
-              Shramic Networks connects workers, farmers, contractors, equipment owners, businesses, experts, and institutions through a trusted AI-assisted operating layer.
+              Shramic Networks helps rural workers, farmers, contractors, and service providers discover opportunities, connect with the right people, and keep work moving in local languages.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <LocalizedLink className="button bg-[#e8a72f] text-[#17201c] hover:bg-[#f1bb51]" href="/ecosystem">
-                Explore platform <ArrowRight size={18} />
+                See how it works <ArrowRight size={18} />
               </LocalizedLink>
               <LocalizedLink className="button border border-white/20 bg-white/10 text-white backdrop-blur hover:bg-white/15" href="/contact">
-                Start a conversation
+                Request worker app access
               </LocalizedLink>
             </div>
           </div>
@@ -43,8 +45,8 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
               <div className="absolute right-[-68px] top-[-68px] h-44 w-44 rounded-full bg-[#1f7a7255] blur-2xl" />
               <div className="relative flex items-center justify-between border-b border-white/10 pb-4">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#e8a72f]">Live ecosystem map</p>
-                  <p className="mt-1 text-2xl font-black">Shramic OS</p>
+                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#e8a72f]">Live service map</p>
+                  <p className="mt-1 text-2xl font-black">Shramic services</p>
                 </div>
                 <RadioTower className="text-[#e8a72f]" />
               </div>
@@ -96,9 +98,9 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
         <div className="container grid gap-10 lg:grid-cols-[.9fr_1.1fr]">
           <div>
             <p className="eyebrow">Problem validation</p>
-            <h2 className="headline mt-4">A broken two-sided market, now measured.</h2>
+            <h2 className="headline mt-4">What the field research showed.</h2>
             <p className="lead mt-5">
-              The seed deck validates the same daily field story at scale: workers wait for jobs, providers struggle to find reliable labour, and informal middlemen capture value from both sides.
+              The field data points to the same daily friction: workers wait for jobs, farmers and contractors struggle to find reliable help, and too much value gets lost in informal coordination.
             </p>
           </div>
           <div className="grid grid-2">
@@ -120,13 +122,13 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
       <section className="section">
         <div className="container">
           <div className="grid gap-10 lg:grid-cols-[.85fr_1.15fr] lg:items-end">
-            <SectionHeading eyebrow="Product architecture" title="A platform suite that feels operational, not ornamental." text="Every module is designed for a specific rural workflow, while the broader system compounds trust, identity, demand, and supply across the ecosystem." />
+            <SectionHeading eyebrow="Product architecture" title="Tools built around real rural workflows." text="Each module is made for a specific job-to-be-done, while the broader system keeps trust, identity, demand, and supply connected behind the scenes." />
             <div className="panel-dark p-6">
               <div className="flex items-start gap-4">
                 <Map className="mt-1 shrink-0 text-[#e8a72f]" />
                 <div>
-                  <h2 className="text-2xl font-black">From fragmented marketplaces to a coordinated rural work graph.</h2>
-                  <p className="mt-3 text-[#d9d0bf]">Public storytelling stays high-level; the operating intelligence remains protected inside the admin and data layers.</p>
+                  <h2 className="text-2xl font-black">From scattered phone calls to a simple way to coordinate work.</h2>
+                  <p className="mt-3 text-[#d9d0bf]">The public site explains the experience clearly, while the detailed admin tools stay behind the scenes.</p>
                 </div>
               </div>
             </div>
@@ -159,8 +161,8 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
         <div className="container">
           <SectionHeading
             eyebrow="Core engines"
-            title="AI matching and fair pricing, described at a public-safe level."
-            text="The platform uses two core intelligence layers to reduce dependency on word-of-mouth, improve job fit, and create more transparent labour coordination."
+            title="How matching and pricing support better job fit."
+            text="The platform uses two intelligence layers to reduce dependency on word-of-mouth, improve job fit, and make labour coordination easier to understand."
           />
           <div className="grid grid-2">
             {coreEngines.map((engine) => {
@@ -181,18 +183,30 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
       <section className="section bg-[#fffdf7]">
         <div className="container grid gap-10 lg:grid-cols-[1fr_1fr]">
           <div className="panel-dark p-8">
-            <p className="eyebrow text-[#e8a72f]">Confidentiality posture</p>
-            <h2 className="headline mt-4">Professional enough for investors. Disciplined enough for strategy.</h2>
+            <p className="eyebrow text-[#e8a72f]">Get started</p>
+            <h2 className="headline mt-4">Choose the path that fits you best.</h2>
             <p className="mt-5 text-lg leading-8 text-[#d9d0bf]">
-              The public website communicates traction, market narrative, ecosystem shape, and partnership readiness without exposing algorithms, pricing logic, raw survey data, financial projections, or unit economics.
+              Workers can ask about job access, farmers can look for help, and contractors can request support for ongoing work.
             </p>
             <div className="mt-8 grid gap-3">
-              {["Public metrics only", "NDA-aware investor workflow", "Admin-ready content governance"].map((item) => (
+              {[
+                "Workers: find work and local opportunities",
+                "Farmers: book labour and services",
+                "Contractors: coordinate crews and timing"
+              ].map((item) => (
                 <div className="flex items-center gap-3" key={item}>
                   <ShieldCheck className="text-[#e8a72f]" size={20} />
                   <span className="font-bold">{item}</span>
                 </div>
               ))}
+            </div>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <LocalizedLink className="button bg-[#e8a72f] text-[#17201c] hover:bg-[#f1bb51]" href="/contact">
+                Ask for access <ArrowRight size={18} />
+              </LocalizedLink>
+              <LocalizedLink className="button border border-white/20 bg-white/10 text-white backdrop-blur hover:bg-white/15" href="/ecosystem">
+                Compare services
+              </LocalizedLink>
             </div>
           </div>
           <div className="grid gap-4">
@@ -210,6 +224,34 @@ export default function HomePage({ params }: { params: Promise<{ locale: string 
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container grid gap-10 lg:grid-cols-[.95fr_1.05fr]">
+          <div>
+            <p className="eyebrow">Trust signals</p>
+            <h2 className="headline mt-4">Validated through field work and partner pathways.</h2>
+            <p className="lead mt-5">
+              The homepage now shows the evidence behind the product: interviews, demos, market validation, and the kinds of organizations that can support pilots or expansion.
+            </p>
+            <div className="mt-8 grid gap-3">
+              {validationEvidence.slice(0, 3).map((item) => (
+                <div className="card p-5" key={item}>
+                  <p className="font-black text-[#17201c]">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            {partners.slice(0, 4).map((partner) => (
+              <div className="glass p-5" key={partner.name}>
+                <p className="eyebrow">{partner.category}</p>
+                <h3 className="mt-3 text-xl font-black text-[#17201c]">{partner.name}</h3>
+                <p className="mt-2 text-sm leading-6 text-[#66716b]">{partner.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
