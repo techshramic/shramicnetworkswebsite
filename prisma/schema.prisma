@@ -1,0 +1,254 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum LeadStatus {
+  NEW
+  IN_PROGRESS
+  COMPLETED
+  ARCHIVED
+}
+
+model User {
+  id                  String    @id @default(cuid())
+  email               String    @unique
+  name                String?
+  passwordHash        String
+  role                Role      @default(VIEWER)
+  failedLoginAttempts Int       @default(0)
+  lockedUntil         DateTime?
+  lastLoginAt         DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  deletedAt           DateTime?
+  posts               BlogPost[]
+}
+
+model BlogPost {
+  id             String        @id @default(cuid())
+  slug           String        @unique
+  title          String
+  excerpt        String
+  content        String
+  category       String
+  tags           String[]
+  featuredImage  String?
+  status         ContentStatus @default(DRAFT)
+  publishedAt    DateTime?
+  authorId       String
+  author         User          @relation(fields: [authorId], references: [id])
+  translations   BlogPostTranslation[]
+  versions       ContentVersion[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  deletedAt      DateTime?
+}
+
+model BlogPostTranslation {
+  id        String   @id @default(cuid())
+  locale    String
+  title     String
+  excerpt   String
+  content   String
+  postId    String
+  post      BlogPost @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([postId, locale])
+}
+
+model TeamMember {
+  id           String        @id @default(cuid())
+  name         String
+  role         String
+  bio          String
+  photoUrl     String?
+  socialLinks  Json?
+  displayOrder Int           @default(0)
+  status       ContentStatus @default(PUBLISHED)
+  translations TeamMemberTranslation[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  deletedAt    DateTime?
+}
+
+model TeamMemberTranslation {
+  id           String     @id @default(cuid())
+  locale       String
+  role         String
+  bio          String
+  teamMemberId String
+  teamMember   TeamMember @relation(fields: [teamMemberId], references: [id])
+
+  @@unique([teamMemberId, locale])
+}
+
+model Career {
+  id           String        @id @default(cuid())
+  title        String
+  department   String
+  location     String
+  type         String
+  description  String
+  status       ContentStatus @default(PUBLISHED)
+  translations CareerTranslation[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  deletedAt    DateTime?
+}
+
+model CareerTranslation {
+  id          String @id @default(cuid())
+  locale      String
+  title       String
+  description String
+  careerId    String
+  career      Career @relation(fields: [careerId], references: [id])
+
+  @@unique([careerId, locale])
+}
+
+model Partner {
+  id           String        @id @default(cuid())
+  name         String
+  logoUrl      String?
+  description  String
+  website      String?
+  category     String
+  displayOrder Int           @default(0)
+  status       ContentStatus @default(PUBLISHED)
+  translations PartnerTranslation[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  deletedAt    DateTime?
+}
+
+model PartnerTranslation {
+  id          String  @id @default(cuid())
+  locale      String
+  description String
+  partnerId   String
+  partner     Partner @relation(fields: [partnerId], references: [id])
+
+  @@unique([partnerId, locale])
+}
+
+model FAQ {
+  id           String        @id @default(cuid())
+  question     String
+  answer       String
+  category     String
+  displayOrder Int           @default(0)
+  status       ContentStatus @default(PUBLISHED)
+  translations FAQTranslation[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  deletedAt    DateTime?
+}
+
+model FAQTranslation {
+  id       String @id @default(cuid())
+  locale   String
+  question String
+  answer   String
+  faqId    String
+  faq      FAQ    @relation(fields: [faqId], references: [id])
+
+  @@unique([faqId, locale])
+}
+
+model FormSubmission {
+  id           String     @id @default(cuid())
+  formType     String
+  name         String
+  email        String
+  phone        String?
+  organization String?
+  message      String
+  metadata     Json?
+  status       LeadStatus @default(NEW)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([formType, status, createdAt])
+}
+
+model InvestorInquiry {
+  id                   String     @id @default(cuid())
+  name                 String
+  email                String
+  organization         String?
+  message              String
+  ndaVersion           String
+  ndaAcknowledgedAt    DateTime
+  ipAddress            String
+  emailVerifiedAt      DateTime?
+  verificationToken    String?
+  status               LeadStatus @default(NEW)
+  auditTrail           Json?
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
+
+  @@index([emailVerifiedAt, status])
+}
+
+model TractionMetric {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  value       String
+  description String
+  displayOrder Int     @default(0)
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+}
+
+model MediaAsset {
+  id        String   @id @default(cuid())
+  url       String
+  altText   String
+  caption   String?
+  mimeType  String
+  width     Int?
+  height    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+}
+
+model ContentVersion {
+  id        String   @id @default(cuid())
+  model     String
+  modelId   String
+  snapshot  Json
+  postId    String?
+  post      BlogPost? @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model EmailLog {
+  id        String   @id @default(cuid())
+  to        String
+  subject   String
+  status    String
+  provider  String?
+  error     String?
+  createdAt DateTime @default(now())
+}
